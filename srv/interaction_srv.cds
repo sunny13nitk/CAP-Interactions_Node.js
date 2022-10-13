@@ -1,11 +1,22 @@
 using app.interactions from '../db/interactions';
-service CatalogService
- {
+//Adding Calculation view Source ref
+using V_INTERACTION from '../db/interactions';
 
- entity Interactions_Header
-    as projection on interactions.Interactions_Header;
+service CatalogService 
+{
 
- entity Interactions_Items
-    as projection on  interactions.Interactions_Items;
+    @requires: 'authenticated-user'
+    entity Interactions_Header
+        as projection on interactions.Interactions_Header;
+
+    @requires: 'Admin'
+    @restrict: [{ grant: 'READ', where: 'LANGU = ''DE'''}]
+    entity Interactions_Items
+        as projection on  interactions.Interactions_Items;
+
+    @readonly
+    entity V_interaction  as projection on V_INTERACTION;    
+
+    function sleep() returns Boolean;
 
 }
